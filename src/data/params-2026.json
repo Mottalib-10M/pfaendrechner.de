@@ -1,0 +1,370 @@
+{
+ "_lisezmoi": "Tous les paramètres légaux du site. Chaque valeur relue sur le texte officiel (Bundesgesetzblatt, gesetze-im-internet.de) le 2026-10-28. Les tableaux officiels complets (mensuel, hebdomadaire, journalier, 2025 et 2026) sont dans tests/fixtures et le moteur est testé ligne par ligne contre eux.",
+ "year": 2026,
+ "retrieved_at": "2026-10-28",
+ "valid_from": "2026-07-01",
+ "valid_to": "2027-06-30",
+ "tabellen": {
+  "2026": {
+   "gilt_ab": "2026-07-01",
+   "gilt_bis": "2027-06-30",
+   "fundstelle": "BGBl. 2026 I Nr. 80",
+   "datum": "2026-03-19",
+   "quelle": "bek2026",
+   "monat": {
+    "grund": 1587.4,
+    "erste": 597.42,
+    "weitere": 332.83,
+    "hoechst": 4866.3,
+    "stufe": 10
+   },
+   "woche": {
+    "grund": 365.33,
+    "erste": 137.5,
+    "weitere": 76.6,
+    "hoechst": 1119.9,
+    "stufe": 2.5
+   },
+   "tag": {
+    "grund": 73.06,
+    "erste": 27.5,
+    "weitere": 15.32,
+    "hoechst": 223.99,
+    "stufe": 0.5
+   }
+  },
+  "2025": {
+   "gilt_ab": "2025-07-01",
+   "gilt_bis": "2026-06-30",
+   "fundstelle": "BGBl. 2025 I Nr. 110",
+   "datum": "2025-04-02",
+   "quelle": "bek2025",
+   "monat": {
+    "grund": 1555.0,
+    "erste": 585.23,
+    "weitere": 326.04,
+    "hoechst": 4766.99,
+    "stufe": 10
+   },
+   "woche": {
+    "grund": 357.87,
+    "erste": 134.69,
+    "weitere": 75.04,
+    "hoechst": 1097.05,
+    "stufe": 2.5
+   },
+   "tag": {
+    "grund": 71.57,
+    "erste": 26.94,
+    "weitere": 15.01,
+    "hoechst": 219.42,
+    "stufe": 0.5
+   }
+  },
+  "2024": {
+   "gilt_ab": "2024-07-01",
+   "gilt_bis": "2025-06-30",
+   "fundstelle": "BGBl. 2024 I Nr. 160",
+   "datum": "2024-05-10",
+   "quelle": "bek2025",
+   "monat": {
+    "grund": 1491.75,
+    "erste": 561.43,
+    "weitere": 312.78,
+    "hoechst": 4573.1,
+    "stufe": 10
+   },
+   "woche": {
+    "grund": 343.31,
+    "erste": 129.21,
+    "weitere": 71.99,
+    "hoechst": 1052.43,
+    "stufe": 2.5
+   },
+   "tag": {
+    "grund": 68.66,
+    "erste": 25.84,
+    "weitere": 14.4,
+    "hoechst": 210.5,
+    "stufe": 0.5
+   }
+  }
+ },
+ "quoten": [
+  0.7,
+  0.5,
+  0.4,
+  0.3,
+  0.2,
+  0.1
+ ],
+ "personenMax": 5,
+ "naechsteTabelle": {
+  "gilt_ab": "2027-07-01",
+  "status": "noch nicht bekannt gemacht",
+  "grundfreibetragEStG2026": 12348
+ },
+ "kindergeld": 259,
+ "elterngeldFrei": 300,
+ "lebensversicherungTodesfall": 5400,
+ "pkonto": {
+  "umwandlungGeschaeftstag": 4,
+  "bescheinigungGeschaeftstag": 2,
+  "bescheinigungJahre": 2,
+  "uebertragMonate": 3,
+  "einwendungMonate": 6,
+  "umwandlungRueckwirkendMonate": 1,
+  "festsetzungMonateMax": 12,
+  "nachzahlungGrenze": 500
+ },
+ "kontopfaendung": {
+  "wartefristMonate": 1
+ },
+ "drittschuldnerWochen": 2,
+ "unterhaltRueckstandJahre": 1,
+ "sources": {
+  "bek2026": {
+   "url": "https://www.recht.bund.de/bgbl/1/2026/80/VO.html",
+   "label": {
+    "de": "Pfändungsfreigrenzenbekanntmachung 2026 vom 19. März 2026, BGBl. 2026 I Nr. 80",
+    "en": "Exemption-limit notice 2026 of 19 March 2026, Federal Law Gazette 2026 I No. 80"
+   }
+  },
+  "bek2025": {
+   "url": "https://www.recht.bund.de/bgbl/1/2025/110/VO.html",
+   "label": {
+    "de": "Pfändungsfreigrenzenbekanntmachung 2025 vom 2. April 2025, BGBl. 2025 I Nr. 110",
+    "en": "Exemption-limit notice 2025 of 2 April 2025, Federal Law Gazette 2025 I No. 110"
+   }
+  },
+  "zpo850": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850.html",
+   "label": {
+    "de": "§ 850 ZPO: Pfändungsschutz für Arbeitseinkommen",
+    "en": "Section 850 ZPO: protection of earned income"
+   }
+  },
+  "zpo850a": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850a.html",
+   "label": {
+    "de": "§ 850a ZPO: unpfändbare Bezüge",
+    "en": "Section 850a ZPO: non-attachable payments"
+   }
+  },
+  "zpo850b": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850b.html",
+   "label": {
+    "de": "§ 850b ZPO: bedingt pfändbare Bezüge",
+    "en": "Section 850b ZPO: conditionally attachable payments"
+   }
+  },
+  "zpo850c": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850c.html",
+   "label": {
+    "de": "§ 850c ZPO: Pfändungsgrenzen für Arbeitseinkommen",
+    "en": "Section 850c ZPO: garnishment limits for earned income"
+   }
+  },
+  "zpo850d": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850d.html",
+   "label": {
+    "de": "§ 850d ZPO: Pfändbarkeit bei Unterhaltsansprüchen",
+    "en": "Section 850d ZPO: garnishment for maintenance claims"
+   }
+  },
+  "zpo850e": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850e.html",
+   "label": {
+    "de": "§ 850e ZPO: Berechnung des pfändbaren Arbeitseinkommens",
+    "en": "Section 850e ZPO: calculating attachable income"
+   }
+  },
+  "zpo850f": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850f.html",
+   "label": {
+    "de": "§ 850f ZPO: Änderung des unpfändbaren Betrages",
+    "en": "Section 850f ZPO: changing the exempt amount"
+   }
+  },
+  "zpo850i": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850i.html",
+   "label": {
+    "de": "§ 850i ZPO: Pfändungsschutz für sonstige Einkünfte",
+    "en": "Section 850i ZPO: protection of other income"
+   }
+  },
+  "zpo850k": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850k.html",
+   "label": {
+    "de": "§ 850k ZPO: Einrichtung und Beendigung des Pfändungsschutzkontos",
+    "en": "Section 850k ZPO: opening and ending a P-account"
+   }
+  },
+  "zpo850l": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__850l.html",
+   "label": {
+    "de": "§ 850l ZPO: Pfändung des Guthabens eines Gemeinschaftskontos",
+    "en": "Section 850l ZPO: garnishment of a joint account"
+   }
+  },
+  "zpo899": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__899.html",
+   "label": {
+    "de": "§ 899 ZPO: pfändungsfreier Betrag auf dem P-Konto, Übertragung",
+    "en": "Section 899 ZPO: protected amount on a P-account, carry-over"
+   }
+  },
+  "zpo900": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__900.html",
+   "label": {
+    "de": "§ 900 ZPO: Moratorium bei Überweisung künftigen Guthabens",
+    "en": "Section 900 ZPO: moratorium for future balances"
+   }
+  },
+  "zpo902": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__902.html",
+   "label": {
+    "de": "§ 902 ZPO: Erhöhungsbeträge auf dem P-Konto",
+    "en": "Section 902 ZPO: increases on a P-account"
+   }
+  },
+  "zpo903": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__903.html",
+   "label": {
+    "de": "§ 903 ZPO: Nachweise über Erhöhungsbeträge",
+    "en": "Section 903 ZPO: proof of increased amounts"
+   }
+  },
+  "zpo904": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__904.html",
+   "label": {
+    "de": "§ 904 ZPO: Nachzahlungen auf dem P-Konto",
+    "en": "Section 904 ZPO: back-payments on a P-account"
+   }
+  },
+  "zpo905": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__905.html",
+   "label": {
+    "de": "§ 905 ZPO: Festsetzung der Erhöhungsbeträge durch das Gericht",
+    "en": "Section 905 ZPO: increases set by the court"
+   }
+  },
+  "zpo906": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__906.html",
+   "label": {
+    "de": "§ 906 ZPO: abweichender pfändungsfreier Betrag",
+    "en": "Section 906 ZPO: a different protected amount"
+   }
+  },
+  "zpo907": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__907.html",
+   "label": {
+    "de": "§ 907 ZPO: Festsetzung der Unpfändbarkeit von Kontoguthaben",
+    "en": "Section 907 ZPO: declaring a balance non-attachable"
+   }
+  },
+  "zpo833a": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__833a.html",
+   "label": {
+    "de": "§ 833a ZPO: Umfang der Kontopfändung",
+    "en": "Section 833a ZPO: scope of an account garnishment"
+   }
+  },
+  "zpo835": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__835.html",
+   "label": {
+    "de": "§ 835 ZPO: Überweisung einer Geldforderung",
+    "en": "Section 835 ZPO: transfer of a money claim"
+   }
+  },
+  "zpo840": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__840.html",
+   "label": {
+    "de": "§ 840 ZPO: Erklärungspflicht des Drittschuldners",
+    "en": "Section 840 ZPO: third-party debtor statement"
+   }
+  },
+  "zpo829": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__829.html",
+   "label": {
+    "de": "§ 829 ZPO: Pfändung einer Geldforderung",
+    "en": "Section 829 ZPO: garnishment of a money claim"
+   }
+  },
+  "zpo222": {
+   "url": "https://www.gesetze-im-internet.de/zpo/__222.html",
+   "label": {
+    "de": "§ 222 ZPO: Fristberechnung",
+    "en": "Section 222 ZPO: computing deadlines"
+   }
+  },
+  "sgb1-54": {
+   "url": "https://www.gesetze-im-internet.de/sgb_1/__54.html",
+   "label": {
+    "de": "§ 54 SGB I: Pfändung von Sozialleistungen",
+    "en": "Section 54 Social Code I: garnishment of social benefits"
+   }
+  },
+  "sgb2-42": {
+   "url": "https://www.gesetze-im-internet.de/sgb_2/__42.html",
+   "label": {
+    "de": "§ 42 SGB II: Unpfändbarkeit des Anspruchs auf Leistungen zum Lebensunterhalt",
+    "en": "Section 42 Social Code II: basic income benefits cannot be garnished"
+   }
+  },
+  "estg76": {
+   "url": "https://www.gesetze-im-internet.de/estg/__76.html",
+   "label": {
+    "de": "§ 76 EStG: Pfändung des Kindergeldes",
+    "en": "Section 76 Income Tax Act: garnishment of child benefit"
+   }
+  },
+  "estg66": {
+   "url": "https://www.gesetze-im-internet.de/estg/__66.html",
+   "label": {
+    "de": "§ 66 EStG: Höhe des Kindergeldes",
+    "en": "Section 66 Income Tax Act: amount of child benefit"
+   }
+  },
+  "estg32a": {
+   "url": "https://www.gesetze-im-internet.de/estg/__32a.html",
+   "label": {
+    "de": "§ 32a EStG: Einkommensteuertarif und Grundfreibetrag",
+    "en": "Section 32a Income Tax Act: tax scale and basic allowance"
+   }
+  },
+  "beeg10": {
+   "url": "https://www.gesetze-im-internet.de/beeg/__10.html",
+   "label": {
+    "de": "§ 10 BEEG: anrechnungsfreier Betrag des Elterngeldes",
+    "en": "Section 10 BEEG: disregarded amount of parental allowance"
+   }
+  },
+  "bgb188": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__188.html",
+   "label": {
+    "de": "§ 188 BGB: Fristende",
+    "en": "Section 188 Civil Code: end of a period"
+   }
+  },
+  "bgb1609": {
+   "url": "https://www.gesetze-im-internet.de/bgb/__1609.html",
+   "label": {
+    "de": "§ 1609 BGB: Rangfolge mehrerer Unterhaltsberechtigter",
+    "en": "Section 1609 Civil Code: ranking of maintenance creditors"
+   }
+  }
+ },
+ "zeilen": {
+  "2026": {
+   "monat": 329,
+   "woche": 302,
+   "tag": 302
+  },
+  "2025": {
+   "monat": 322,
+   "woche": 296,
+   "tag": 296
+  }
+ }
+}

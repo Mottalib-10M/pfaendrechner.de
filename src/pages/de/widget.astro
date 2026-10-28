@@ -1,0 +1,29 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { SITE_URL } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { breadcrumbSchema } from '../../lib/seo';
+const lang = 'de';
+const code = (name: string, t: string, h: number) => `<iframe src="${SITE_URL}/embed/${lang}/${name}/" title="${t}" width="100%" height="${h}" style="border:0;max-width:1100px" loading="lazy"></iframe>`;
+const items = [
+  { name: 'pfaendungsrechner', h2: 'Pfändungsrechner', text: 'Netto, Unterhaltspflichten und Lohnzeitraum eingeben: Der Rechner zeigt den pfändbaren und den freien Betrag nach der aktuellen Tabelle.', t: 'Pfändungsrechner', h: 900 },
+  { name: 'p-konto', h2: 'P-Konto-Rechner', text: 'Zeigt, wie viel auf dem Pfändungsschutzkonto im Monat geschützt ist, mit Personen, Kindergeld und Sozialleistungen.', t: 'P-Konto-Freibetrag berechnen', h: 820 },
+];
+---
+<PageLayout title="Pfändungsrechner einbinden: Lohn und P-Konto per iframe" description="Pfändungsrechner und P-Konto-Rechner kostenlos per iframe einbinden: Code kopieren, die neue Tabelle erscheint von selbst, ohne Pflege auf Ihrer Seite." lang={lang} noindex={true} jsonLd={[breadcrumbSchema([{ name: 'Start', path: route('home', lang) }, { name: 'Widget', path: route('widget', lang) }])]} breadcrumbs={[{ label: 'Widget' }]} showAuthor={false}>
+  <header class="mb-6">
+    <h1 class="text-3xl font-bold text-navy-900 md:text-4xl">Pfändungsrechner einbinden</h1>
+    <p class="mt-3 text-lg text-navy-700">Für Vereine, Sozialdienste, Verbände und Ratgeberseiten: einmal kopieren, jede neue Pfändungstabelle erscheint von selbst.</p>
+  </header>
+  <div class="prose prose-slate max-w-none">
+    {items.map((i) => (<>
+      <h2>{i.h2}</h2>
+      <p>{i.text}</p>
+      <pre class="overflow-x-auto rounded-lg bg-navy-900 p-4 text-sm text-white"><code>{code(i.name, i.t, i.h)}</code></pre>
+    </>))}
+    <p>Für die englische Fassung ersetzen Sie <code>/embed/de/</code> durch <code>/embed/en/</code>. Bedingungen: Der Quellenlink unter dem Rechner bleibt sichtbar, der Rechner wird nicht verändert und ohne Gewähr bereitgestellt. Was Ihre Leser eingeben, bleibt auf deren Gerät. Fragen über die <a href={route('contact', lang)}>Kontaktseite</a>.</p>
+  </div>
+  <div class="mt-8 overflow-hidden rounded-xl border border-navy-200">
+    <iframe src={`/embed/${lang}/pfaendungsrechner/`} title="Pfändungsrechner" width="100%" height="900" style="border:0" loading="lazy"></iframe>
+  </div>
+</PageLayout>

@@ -1,0 +1,42 @@
+---
+/** Methode : Rechenweg § 850c, Prüfung gegen die amtlichen Tabellen, P-Konto, Fristen, Grenzen. Jede Zahl aus params-2026.json. */
+import PageLayout from '../../layouts/PageLayout.astro';
+import { route } from '../../i18n/routes';
+import { KIT as K } from '../../lib/kit';
+import { srcLink } from '../../lib/helpers';
+import { breadcrumbSchema, webPageSchema } from '../../lib/seo';
+import { displayDate, formatMoney, formatNumber } from '../../lib/format';
+const lang = 'de';
+const path = route('method', lang);
+const P = K.P, T = P.tabellen['2026'], T5 = P.tabellen['2025'], M = T.monat;
+const ZEILEN = Object.values(P.zeilen).reduce((a, z) => a + z.monat + z.woche + z.tag, 0);
+const title = 'Pfändungsrechner 2026: Rechenweg nach § 850c ZPO und Prüfung';
+const description = 'So rechnet der Pfändungsrechner 2026: Freibetrag, Stufen und Quoten nach § 850c ZPO, Prüfung gegen jede Zeile der amtlichen Tabellen, P-Konto und Fristen.';
+const s = (k: string, t: string) => srcLink(k, lang, t);
+const d = (x: string) => displayDate(x, 'de-DE');
+const e = (x: number, n = 2) => formatMoney(x, n, lang);
+const q = P.quoten.map((x: number) => `${formatNumber(x * 100, 0, lang)} %`).join(', ');
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[webPageSchema({ name: 'Rechenweg', description, path, lang }), breadcrumbSchema([{ name: 'Start', path: route('home', lang) }, { name: 'Rechenweg', path }])]} breadcrumbs={[{ label: 'Rechenweg' }]}>
+  <article class="prose prose-slate max-w-none">
+    <h1>Wie der Pfändungsrechner rechnet</h1>
+    <p>Alle Rechner dieser Seite laufen in Ihrem Browser. Beträge, Personenzahl und Daten, die Sie eingeben, werden an keinen Server geschickt und nirgends gespeichert. Grundlage sind die Zivilprozessordnung, die amtlichen Bekanntmachungen im Bundesgesetzblatt und die übrigen auf jeder Seite verlinkten Gesetze. Stand unserer letzten Lesung: {d(P.retrieved_at)}.</p>
+
+    <h2>Die Formel des § 850c ZPO</h2>
+    <p>Der pfändungsfreie Betrag besteht aus einem Grundbetrag, einem Zuschlag für die erste unterhaltsberechtigte Person und einem kleineren Zuschlag für die zweite bis fünfte Person. Für Lohnzeiträume ab dem {d(T.gilt_ab)} gelten monatlich {e(M.grund)}, {e(M.erste)} und {e(M.weitere)} (<Fragment set:html={s('bek2026', T.fundstelle)} />). Vom Teil des Nettos über diesem Freibetrag bleiben nach <Fragment set:html={s('zpo850c', '§ 850c Abs. 3 ZPO')} /> je nach Personenzahl {q} unpfändbar. Das Netto wird zuvor auf die Stufe der Tabelle abgerundet: {e(M.stufe, 0)} im Monat, {e(T.woche.stufe)} in der Woche, {e(T.tag.stufe)} am Tag. Was über {e(M.hoechst)} liegt, ist voll pfändbar. Mehr als fünf Personen zählen nicht.</p>
+    <p>Der Rechner rechnet in Cent, nicht mit Gleitkommazahlen, und rundet am Ende kaufmännisch auf den Cent, wie es die Tabelle tut.</p>
+
+    <h2>Nachweis: jede Zeile der amtlichen Tabellen</h2>
+    <p>Wir haben die sechs Tabellen der Bekanntmachungen 2026 und 2025 (Monat, Woche, Tag) aus dem amtlichen Text eingelesen und als Prüfdatei abgelegt. Ein automatischer Test vergleicht bei jeder Änderung des Codes alle {formatNumber(ZEILEN, 0, lang)} Zeilen mit allen sechs Spalten (keine bis fünf Personen) mit dem Ergebnis des Rechners. Abweichungen: keine. Dieselben Tests prüfen den Sockelbetrag des P-Kontos ({e(K.sockel('2026'), 0)} ab {d(T.gilt_ab)}, davor {e(K.sockel('2025'), 0)}), die Freibeträge für Weihnachtsgeld, das Osterdatum der nächsten Jahre und die Fristen.</p>
+
+    <h2>P-Konto und Fristen</h2>
+    <p>Der Sockelbetrag ist der monatliche Grundbetrag, auf volle 10 Euro aufgerundet (<Fragment set:html={s('zpo899', '§ 899 ZPO')} />). Erhöhungen folgen <Fragment set:html={s('zpo902', '§ 902 ZPO')} />: der Zuschlag nach § 850c Abs. 2 je Person, das Kindergeld von {e(P.kindergeld, 0)} je Kind (<Fragment set:html={s('estg66', '§ 66 EStG')} />) und bestimmte Sozialleistungen. Das nicht verbrauchte Guthaben geht nach § 899 Abs. 2 bis zu {P.pkonto.uebertragMonate} Monate weiter; unser Übertragsrechner bildet das als vereinfachtes Modell ab, das immer das älteste Guthaben zuerst verbraucht.</p>
+    <p>Fristen rechnen wir nach <Fragment set:html={s('bgb188', '§ 188 BGB')} /> und <Fragment set:html={s('zpo222', '§ 222 Abs. 2 ZPO')} />: Fällt das Ende auf einen Samstag, Sonntag oder Feiertag, endet die Frist am nächsten Werktag. Berücksichtigt sind nur die bundesweiten Feiertage. Landesfeiertage wie Fronleichnam oder der Reformationstag sind nicht eingerechnet; in diesen Ländern kann das Ende einen Tag später liegen.</p>
+
+    <h2>Grenzen</h2>
+    <p>Die Rechner geben das Ergebnis nach Gesetz und Tabelle wieder. Sie kennen Ihren Pfändungs- und Überweisungsbeschluss nicht. Bei der Pfändung wegen Unterhalt (<Fragment set:html={s('zpo850d', '§ 850d ZPO')} />), bei Selbstständigen (§ 850i) und bei einer Änderung nach § 850f setzt das Vollstreckungsgericht den Betrag fest; dort rechnen wir nichts aus, sondern zeigen nur die gesetzliche Obergrenze. Die Tabelle für Lohnzeiträume ab dem {d(P.naechsteTabelle.gilt_ab)} ist noch nicht bekannt gemacht; der Prognoserechner arbeitet mit einer Annahme, die Sie selbst eingeben, und zeigt sie nie als amtlich an. Zum Vergleich steht die frühere Tabelle ({d(T5.gilt_ab)} bis {d(T5.gilt_bis)}) bereit.</p>
+
+    <h2>Aktualisierung</h2>
+    <p>Jedes Frühjahr erscheint die neue Pfändungsfreigrenzenbekanntmachung. Wir lesen sie im Bundesgesetzblatt, tragen die Werte mit Fundstelle ein, lesen die Tabellen neu ein und schalten erst frei, wenn alle Zeilen wieder übereinstimmen. Das Kindergeld prüfen wir zu jedem Jahreswechsel. Fehler melden Sie über die <a href={route('contact', lang)}>Kontaktseite</a>; wie wir korrigieren, steht in den <a href={route('editorial', lang)}>Redaktionsgrundsätzen</a>.</p>
+  </article>
+</PageLayout>

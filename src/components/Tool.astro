@@ -1,0 +1,9 @@
+---
+/** L'outil d'une page : un simulateur déclaratif de tool-specs.ts. */
+import SpecTool from './calc/SpecTool';
+import { route } from '../i18n/routes';
+import type { Lang } from '../lib/format';
+interface Props { kind: string; lang: Lang; arg?: Record<string, number | string>; idPrefix?: string }
+const { kind, lang, arg, idPrefix = 't' } = Astro.props;
+---
+<SpecTool client:load kind={kind} lang={lang} arg={arg ? JSON.stringify(arg) : undefined} methodHref={route('method', lang)} idPrefix={idPrefix} />

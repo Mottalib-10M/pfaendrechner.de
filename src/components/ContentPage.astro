@@ -1,0 +1,42 @@
+---
+/** Une page de sujet : H1, réponse en une ligne, le simulateur tout de suite, la réponse repliée, le corps, FAQ, sources. */
+import PageLayout from '../layouts/PageLayout.astro';
+import Clamp from './Clamp.astro';
+import Tool from './Tool.astro';
+import Body from './Body.astro';
+import { route, hasRoute, type Locale } from '../i18n/routes';
+import { displayDate } from '../lib/format';
+import { label, GROUPS } from '../i18n/nav';
+import { t } from '../i18n/ui';
+import { helpers, sourceList } from '../lib/helpers';
+import { articleSchema, faqSchema, breadcrumbSchema, webPageSchema, webApplicationSchema } from '../lib/seo';
+import { AUTHOR_NAME, LAST_UPDATED, LANG_TAGS } from '../data/site-config';
+import P from '../data/params-2026.json';
+import type { GuideDef } from '../lib/page-types';
+import { guideById } from '../lib/pages';
+interface Props { page: GuideDef; lang: Locale }
+const { page, lang } = Astro.props;
+const x = page[lang]!;
+const ui = t(lang);
+const path = route(page.id, lang);
+const group = GROUPS.find((g) => g.id === page.group)!;
+const jsonLd = [webApplicationSchema({ name: x.h1, description: x.description, path, lang }), articleSchema({ title: x.h1, description: x.description, path, lang }), webPageSchema({ name: x.h1, description: x.description, path, lang }), breadcrumbSchema([{ name: ui.breadcrumbHome, path: route('home', lang) }, { name: x.nav, path }])];
+if (x.faqs.length) jsonLd.push(faqSchema(x.faqs, lang));
+const related = page.related.filter((id) => hasRoute(id, lang)).map((id) => ({ href: route(id, lang), name: label(id, lang), description: guideById(id)?.[lang]?.card ?? '' }));
+const sources = sourceList(page.sources, lang);
+const tag = LANG_TAGS[lang];
+const gel = displayDate(LAST_UPDATED, tag);
+const read = { de: `Tabelle 2026 (${P.tabellen['2026'].fundstelle}) und ZPO geprüft am ${gel}`, en: `2026 table (Federal Law Gazette ${P.tabellen['2026'].fundstelle.replace('BGBl. ', '').replace('Nr.', 'No.')}) and ZPO checked on ${gel}` }[lang];
+---
+<PageLayout title={x.title} description={x.description} lang={lang} jsonLd={jsonLd} faqs={x.faqs} related={related} sources={sources} breadcrumbs={[{ label: group.label[lang] }, { label: x.nav }]}>
+  <article>
+    <header class="mb-4">
+      <h1 class="text-[1.7rem] font-bold text-navy-900 max-sm:leading-tight sm:text-3xl md:text-4xl">{x.h1}</h1>
+      <p class="mt-2 text-base text-navy-700 sm:text-lg">{x.intro}</p>
+    </header>
+    <div data-outil data-chrome class="mb-4"><Tool kind={page.tool} lang={lang} arg={page.toolArg} idPrefix={`p${page.order}`} /></div>
+    <p class="mb-6 text-sm text-navy-600">{ui.reviewedBy} <a href={route('about', lang)} class="underline hover:text-navy-900">{AUTHOR_NAME}</a> · <a href={route('method', lang)} class="underline hover:text-navy-900">{label('method', lang)}</a> · {read}</p>
+    <Clamp text={x.resume} lang={lang} id={`clamp-${page.id}`} class="mb-8" />
+    <Body html={x.body(helpers(lang))} path={path} lang={lang} />
+  </article>
+</PageLayout>

@@ -1,0 +1,35 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { route } from '../../i18n/routes';
+import { AUTHOR_NAME, AUTHOR_DESC, CONTACT_EMAIL, SITE_NAMES } from '../../data/site-config';
+import { srcLink } from '../../lib/helpers';
+import { KIT as K } from '../../lib/kit';
+import { profilePageSchema, breadcrumbSchema } from '../../lib/seo';
+import { formatNumber } from '../../lib/format';
+const lang = 'de';
+const path = route('about', lang);
+const title = 'Pfändungsrechner 2026 Herausgeber: wer wir sind, Quellen';
+const description = 'Der Pfändungsrechner 2026 kommt von Radif Partners: unabhängige, kostenlose Rechner zu Lohnpfändung und P-Konto, im Browser, ohne Konto und ohne Speicherung.';
+const s = (k: string, t: string) => srcLink(k, lang, t);
+const ZEILEN = Object.values(K.P.zeilen).reduce((a, z) => a + z.monat + z.woche + z.tag, 0);
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[profilePageSchema({ path, lang }), breadcrumbSchema([{ name: 'Start', path: route('home', lang) }, { name: 'Über uns', path }])]} breadcrumbs={[{ label: 'Über uns' }]}>
+  <article class="prose prose-slate max-w-none">
+    <h1>Über {SITE_NAMES[lang]}</h1>
+    <p>{AUTHOR_DESC.de}</p>
+    <h2>Warum es diese Seite gibt</h2>
+    <p>Wer eine Lohn- oder Kontopfändung erhält, braucht schnell eine Zahl: Wie viel bleibt mir? Die amtliche Tabelle beantwortet das, ist aber ein langes PDF mit Hunderten Zeilen, und viele Angebote dazu enden in einem Kontaktformular. Diese Seite will das Gegenteil: dieselbe Tabelle als Rechner, für Monat, Woche und Tag, dazu das P-Konto, die Fristen und die Einkommen, die gar nicht gepfändet werden dürfen. Unser Mehrwert: Der Rechenweg ist gegen alle {formatNumber(ZEILEN, 0, lang)} Zeilen der Tabellen 2025 und 2026 geprüft, und jede Antwort nennt den Paragrafen, aus dem sie folgt.</p>
+    <h2>Wer sie herausgibt</h2>
+    <p>Herausgeber ist {AUTHOR_NAME}, ein Unternehmen, das Rechner aus öffentlichen Regeln und Daten baut. {AUTHOR_NAME} ist keine Behörde, kein Gericht, keine Schuldnerberatung und keine Kanzlei. Die Seite ist mit keinem Ministerium, keinem Gläubiger, keinem Inkassounternehmen und keiner Bank verbunden und verwendet keine Logos solcher Stellen. Sie verkauft nichts, vermittelt keine Beratung und enthält keine Affiliate-Links.</p>
+    <LegalIdentity lang={lang} />
+    <h2>Woher die Zahlen kommen</h2>
+    <p>Die Freibeträge stammen aus der <Fragment set:html={s('bek2026', 'Pfändungsfreigrenzenbekanntmachung 2026')} /> und der <Fragment set:html={s('bek2025', 'Bekanntmachung 2025')} />, die Regeln aus der Zivilprozessordnung, insbesondere <Fragment set:html={s('zpo850c', '§ 850c')} />, <Fragment set:html={s('zpo850k', '§ 850k')} /> und <Fragment set:html={s('zpo899', '§ 899 ZPO')} />, dazu aus <Fragment set:html={s('sgb1-54', '§ 54 SGB I')} /> und <Fragment set:html={s('estg76', '§ 76 EStG')} />. Wie gerechnet und geprüft wird, steht im <a href={route('method', lang)}>Rechenweg</a>; wie wir korrigieren, in den <a href={route('editorial', lang)}>Redaktionsgrundsätzen</a>.</p>
+    <h2>Ihre Daten</h2>
+    <p>Die Rechner arbeiten ausschließlich in Ihrem Browser. Es gibt kein Konto und kein Formular, das Ihre Angaben an uns sendet. Einzelheiten zur Reichweitenmessung stehen in der <a href={route('privacy', lang)}>Datenschutzerklärung</a>.</p>
+    <h2>Was die Seite nicht leistet</h2>
+    <p>Sie ersetzt weder den Pfändungs- und Überweisungsbeschluss noch eine Entscheidung des Vollstreckungsgerichts und gibt keine Rechtsberatung. Maßgeblich ist, was Gericht, Arbeitgeber und Bank im Einzelfall festsetzen.</p>
+    <h2>Schreiben Sie uns</h2>
+    <p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, wenn Ihnen ein falscher Betrag, eine veraltete Tabelle oder eine falsch berechnete Frist auffällt.</p>
+  </article>
+</PageLayout>

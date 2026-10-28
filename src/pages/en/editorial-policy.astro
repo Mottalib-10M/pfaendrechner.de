@@ -1,0 +1,27 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, REVIEW_CYCLE_MONTHS, SITE_NAMES } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+const lang = 'en';
+---
+<PageLayout title={`${SITE_NAMES[lang]} editorial policy: sources and checks`} description="Where protected amounts, tables and deadlines come from, the order in which we rank sources, how the calculators are tested, when we update and how we fix mistakes." lang={lang} noindex={true} breadcrumbs={[{ label: 'Editorial policy' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Editorial policy and corrections</h1>
+    <p>If you plan with a wrong protected amount, you either hand too much to the creditor or run short at the end of the month. That is why this page says where everything comes from and what happens when something is wrong.</p>
+    <h2>Responsibility</h2><p>Content and calculators are the responsibility of {AUTHOR_NAME}. Contact: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    <h2>Order of sources</h2>
+    <ol>
+      <li><strong>Statutes</strong> as currently in force on gesetze-im-internet.de: Code of Civil Procedure (sections 829 to 907), Social Code I and II, Income Tax Act, Parental Allowance Act, Civil Code;</li>
+      <li><strong>Official notices</strong> in the Federal Law Gazette, above all the yearly exemption-limit notice with its tables;</li>
+      <li><strong>Explanatory memoranda and publications</strong> of federal ministries, for interpretation only and always named.</li>
+    </ol>
+    <p>Forums, advice articles and service providers are not a source for an amount or a deadline. If two sources conflict, the higher one wins, and we say so.</p>
+    <h2>Every figure dated</h2><p>Every protected amount, step and deadline is stored with its reference and reading date in one parameter file. Pages take their figures from that file, never from the text. Anything not yet in the Federal Law Gazette, such as the table from 1 July 2027, is marked “not yet published” and is not used by the calculators.</p>
+    <h2>How the calculators are tested</h2><p>The official tables are stored as test data. Automated tests compare every row with the calculator output, plus the P-account base amount, deadlines and holidays, on every code change.</p>
+    <h2>Schedule</h2><p>Sources are reread regularly. A full review at least every {REVIEW_CYCLE_MONTHS} months, and after each new notice, each change in child benefit and each amendment to sections 850 to 907 ZPO.</p>
+    <h2>Handling mistakes</h2>
+    <ol><li>Check against the source.</li><li>Fix in the parameter file or the calculation, plus a new test.</li><li>New date on every page.</li></ol>
+    <h2>Independence</h2><p>No money from creditors, collection agencies, banks, law firms or advice services. No affiliate links, no paid content, no lead form, no referrals.</p>
+    <p>See also the <a href={route('method', lang)}>method</a>. Version: {LAST_UPDATED}.</p>
+  </div>
+</PageLayout>

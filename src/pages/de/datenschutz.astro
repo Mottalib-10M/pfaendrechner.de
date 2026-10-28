@@ -1,0 +1,53 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { CLARITY_ID, CONTACT_EMAIL, GA4_ID, LAST_UPDATED, LEGAL, SITE_NAMES, SITE_URL } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+const lang = 'de';
+const title = `Datenschutzerklärung – ${SITE_NAMES[lang]}`;
+const description = GA4_ID ? 'Reichweitenmessung mit Google Analytics und Cookies, ohne Werbung; Eingaben bleiben im Browser; Server-Logs des Hosters; Ihre Rechte und die Aufsichtsbehörde.' : 'Eingaben bleiben im Browser, keine Cookies, Server-Logs des Hosters: welche Daten die Seite verarbeitet, Ihre Rechte und die zuständige Aufsichtsbehörde.';
+---
+{/* Page générée par scripts/gen-legal-pages.py (trame, décision GA4 du 2026-10-17). Ne pas
+     retoucher à la main : relancer le script. Un passage propre au site se garde entre
+     les marqueurs site:debut et site:fin. */}
+<PageLayout title={title} description={description} lang={lang} noindex={true} breadcrumbs={[{ label: 'Datenschutz' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Datenschutzerklärung</h1>
+    <p>Diese Seite beschreibt die Verarbeitung personenbezogener Daten bei der Nutzung von {SITE_URL} nach Art. 12 bis 14 der Verordnung (EU) 2016/679 (DSGVO) und des Bundesdatenschutzgesetzes (BDSG).</p>
+    <h2>1. Verantwortlicher</h2>
+    <LegalIdentity lang={lang} />
+    <p>Fragen zu Ihren Daten: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Ein Datenschutzbeauftragter ist nicht benannt, da die Voraussetzungen des Art. 37 DSGVO nicht vorliegen.</p>
+    <h2>2. Ihre Eingaben bleiben im Browser</h2>
+    <p>Die Berechnungen laufen in Ihrem Browser. Beträge, Daten und Angaben zu Ihrer Situation <strong>werden an keinen Server übertragen</strong>, nirgends gespeichert und keiner Kennung zugeordnet. Die Seite verlangt weder Konto noch Namen noch E-Mail-Adresse. Ein Teilen-Link enthält Ihre Eingaben in der Adresse der Seite: Geben Sie ihn nur an Personen Ihrer Wahl weiter.</p>
+    <h2>3. Verarbeitungen</h2>
+    <h3>Server-Logs des Hosters</h3>
+    <p>Der Hoster speichert bei jedem Abruf IP-Adresse, Datum und Uhrzeit, die abgerufene Seite, den Browser und die verweisende Seite. Zweck: Sicherheit des Dienstes und Fehlerdiagnose. Rechtsgrundlage: das berechtigte Interesse des Anbieters (Art. 6 Abs. 1 lit. f DSGVO). Dauer: nach den Richtlinien des Hosters.</p>
+    {GA4_ID ? (<>
+    <h3>Reichweitenmessung mit Google Analytics</h3>
+    <p>Die Seite nutzt Google Analytics 4, um Besuche zu zählen und zu sehen, welche Seiten weiterhelfen: aufgerufene Seiten, verweisende Seite, Besuchsdauer, Geräte- und Browsertyp, ungefähres Land und ungefähre Stadt. Dazu setzt Google Analytics zwei Cookies auf Ihrem Gerät: <code>_ga</code>, das Besucher über eine zufällige Kennung unterscheidet, und <code>_ga_{GA4_ID.replace('G-', '')}</code>, das den Stand des Besuchs speichert. Ihre Laufzeit ist auf höchstens 13 Monate (390 Tage) eingestellt und verlängert sich nicht bei jedem Besuch; Google sieht standardmäßig 2 Jahre vor.</p>
+    <p>Die IP-Adresse wird anonymisiert: Google Analytics 4 protokolliert und speichert sie nicht, sondern nutzt sie nur bei der Erfassung, um Land und Stadt ungefähr zu bestimmen. Die an Google Analytics übermittelte Seitenadresse enthält keine Parameter, die Eingaben eines Teilen-Links gehen also nicht mit. Die Seite zeigt keine Werbung: Werbe-Speicherung, Werbedaten, personalisierte Anzeigen und Google-Signale sind abgeschaltet, Messdaten gehen an keinen Werbetreibenden.</p>
+    <p>Zweck: Reichweitenmessung. Rechtsgrundlage: das berechtigte Interesse des Anbieters (Art. 6 Abs. 1 lit. f DSGVO). Anbieter: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Speicherdauer bei Google: 14 Monate für Besuchs- und Kennungsdaten, danach Löschung; es bleiben nur anonyme Summen.</p>
+    </>) : (<>
+    <h3>Keine Reichweitenmessung</h3>
+    <p>Die Seite setzt keine Cookies und nutzt keine Analyse- oder Werbewerkzeuge.</p>
+    </>)}
+    {CLARITY_ID && (<>
+    <h3>Technische Stabilitätsmessung mit Microsoft Clarity, ohne Cookies</h3>
+    <p>Um Fehler, langsame Seiten und nicht reagierende Schaltflächen zu finden, nutzt die Seite Microsoft Clarity im cookiefreien Modus: Clarity setzt keine Cookies, jeder Seitenaufruf erhält eine eigene Kennung, Seitentext und Ihre Eingaben sind maskiert. Clarity erhält die Seitenstruktur, Klicks, Scrollen, Gerätetyp, Ladezeiten und Fehler. Zweck: Stabilität der Seite. Rechtsgrundlage: das berechtigte Interesse des Anbieters (Art. 6 Abs. 1 lit. f DSGVO). Anbieter: Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, Irland. Speicherdauer: 30 Tage für Seitenaufzeichnungen, höchstens 13 Monate für zusammengefasste Daten.</p>
+    </>)}
+    <h3>Nachrichten an uns</h3>
+    <p>Schreiben Sie an die Kontaktadresse, werden Ihre E-Mail-Adresse und Ihre Nachricht so lange aufbewahrt, wie es für die Antwort und gegebenenfalls eine Fehlerkorrektur nötig ist, und spätestens drei Jahre nach dem letzten Austausch gelöscht. Rechtsgrundlage: das berechtigte Interesse des Anbieters (Art. 6 Abs. 1 lit. f DSGVO).</p>
+    <h2>4. Empfänger</h2>
+    <p>Daten werden weder verkauft noch vermietet noch weitergegeben. Zugriff haben nur der Hoster{GA4_ID && ', Google Ireland Limited für Google Analytics'}{CLARITY_ID && ', Microsoft Ireland Operations Limited für Clarity'}, jeweils als Auftragsverarbeiter nach Art. 28 DSGVO. Werbenetzwerke sind auf der Seite nicht tätig.</p>
+    <h2>5. Übermittlung außerhalb der Europäischen Union</h2>
+    <p>Server-Logs des Hosters können in den USA verarbeitet werden.{GA4_ID && ' Daten von Google Analytics können an Google LLC in den USA übermittelt werden.'}{CLARITY_ID && ' Daten von Clarity können an die Microsoft Corporation in den USA übermittelt werden.'} Grundlage sind das EU-U.S. Data Privacy Framework und die Standardvertragsklauseln der Europäischen Kommission.</p>
+    <h2>6. Ihre Rechte</h2>
+    <p>Sie haben die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung, Widerspruch und Datenübertragbarkeit nach Art. 15 bis 22 DSGVO. Schreiben Sie an <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>; wir antworten innerhalb eines Monats. Ohne Benutzerkonten haben wir meist keine Daten, die Sie identifizieren; das teilen wir Ihnen dann mit.</p>
+    {GA4_ID && (<p>Der Reichweitenmessung widersprechen Sie auch ohne Nachricht an uns: Blockieren oder löschen Sie Cookies in den Einstellungen Ihres Browsers, oder installieren Sie das <a href="https://tools.google.com/dlpage/gaoptout" rel="nofollow noopener" target="_blank">Browser-Add-on zur Deaktivierung von Google Analytics</a>. Die Seite funktioniert dann genauso.</p>)}
+    {CLARITY_ID && (<p>Für die Stabilitätsmessung: Blockieren Sie die Domain <code>clarity.ms</code> im Browser oder mit einem Inhaltsblocker.</p>)}
+    <p>Sie können sich bei der Aufsichtsbehörde beschweren: {LEGAL.supervisoryAuthority} (<a href={LEGAL.supervisoryAuthorityUrl} rel="nofollow noopener" target="_blank">{LEGAL.supervisoryAuthorityUrl}</a>).</p>
+    <h2>7. Keine automatisierte Entscheidung</h2>
+    <p>Ein Rechenergebnis ist eine Schätzung, die auf Ihre Anfrage aus Ihren Eingaben in Ihrem Browser entsteht. Es hat keine Rechtswirkung und ist keine automatisierte Entscheidung nach Art. 22 DSGVO. Ein Profiling findet nicht statt.</p>
+    <p>Siehe auch die Seite <a href={route('cookies', lang)}>Cookies</a>. Stand: {LAST_UPDATED}.</p>
+  </div>
+</PageLayout>

@@ -1,0 +1,79 @@
+import { defineGuide } from '../../lib/page-types';
+import { KIT as K } from '../../lib/kit';
+import { formatMoney, displayDate } from '../../lib/format';
+
+/* Übertrag auf dem P-Konto : § 899 Abs. 2 ZPO (drei Folgemonate, Verrechnung mit dem ältesten Guthaben), § 902 Satz 2
+   (gilt auch für Erhöhungsbeträge), § 900 (Moratorium bei künftigem Guthaben), § 899 Abs. 3 (Einwendungen bis Ende des
+   sechsten Folgemonats). Das Rechenmodell (engine/uebertrag) ist vereinfacht ; § 900 ist darin nicht abgebildet. */
+type L = 'de' | 'en';
+const e2 = (x: number, l: L) => formatMoney(x, Number.isInteger(x) ? 0 : 2, l);
+const d = (iso: string, l: L) => displayDate(iso, l === 'de' ? 'de-DE' : 'en-GB');
+const S = K.sockel();
+const A = K.uebertrag(S, [1200, 1400, 1590, 1900, 1590].map((a) => ({ eingang: S, ausgaben: a })));
+const B = K.uebertrag(S, [1, 2, 3, 4, 5].map(() => ({ eingang: 1800, ausgaben: 1000 })));
+const M = K.P.pkonto.uebertragMonate;
+const BERECHNUNG = '2026-11-30';
+const EINW = K.monatsendeNach(BERECHNUNG, K.P.pkonto.einwendungMonate);
+
+export default defineGuide({
+  id: 'p-konto-uebertrag', group: 'konto', order: 24,
+  tool: 'uebertrag',
+  related: ['p-konto', 'p-konto-freibetrag', 'nachzahlung', 'kontopfaendung', 'p-konto-bescheinigung'],
+  sources: ['zpo899', 'zpo900', 'zpo902', 'zpo835'],
+  de: {
+    slug: 'p-konto-uebertrag',
+    nav: 'Übertrag auf dem P-Konto', card: 'Was vom Freibetrag übrig bleibt, wandert drei Monate mit',
+    title: 'P-Konto Übertrag 2026: Restguthaben in die Folgemonate',
+    description: 'P-Konto Übertrag 2026: Nicht verbrauchter Freibetrag bleibt drei Monate geschützt, Ausgaben zählen vom ältesten Guthaben. Vier Monate rechnen, Fristen kennen.',
+    h1: 'Übertrag auf dem P-Konto: was Sie in den nächsten Monat mitnehmen',
+    intro: 'Freibetrag, monatliche Gutschrift und Ausgaben eintragen: Der Rechner verfolgt vier Monate lang, wie viel geschützt bleibt, wie viel übertragen wird und was der Gläubiger bekäme.',
+    resume: `Was Sie in einem Monat vom geschützten Betrag Ihres P-Kontos nicht ausgeben, bleibt in den ${M} folgenden Kalendermonaten zusätzlich geschützt (§ 899 Abs. 2 ZPO). Jede Ausgabe wird dabei mit dem Guthaben verrechnet, das zuerst gutgeschrieben wurde, also mit dem ältesten Rest. Ein Beispiel mit dem Sockel von ${e2(S, 'de')} und einer Gutschrift in gleicher Höhe: Geben Sie im ersten Monat ${e2(A[0].verfuegt, 'de')} aus, wandern ${e2(A[0].uebertrag, 'de')} in den zweiten Monat. Nach einem sparsamen zweiten Monat stehen ${e2(A[1].uebertrag, 'de')} als Polster bereit, und im vierten Monat können Sie ${e2(A[3].verfuegt, 'de')} ausgeben, ohne dass etwas an den Gläubiger fällt. Kommt dagegen jeden Monat mehr herein als der Freibetrag, etwa ${e2(1800, 'de')}, ist der Überschuss von ${e2(B[0].pfaendbar, 'de')} jeden Monat pfändbar. Die Regel gilt auch für Erhöhungsbeträge nach § 902 ZPO. Der Rechner ist ein vereinfachtes Modell: Er bildet die Wartefrist des § 900 ZPO nicht ab und ersetzt nicht die Abrechnung Ihrer Bank.`,
+    faqs: [
+      { q: 'Wie lange bleibt nicht ausgegebenes Geld auf dem P-Konto geschützt?', a: `Drei Kalendermonate nach dem Monat, in dem es geschützt war (§ 899 Abs. 2 ZPO). Ein Rest aus dem Januar ist also im Februar, März und April zusätzlich zum laufenden Freibetrag geschützt. Liegt er im Mai noch auf dem Konto, gilt er nicht mehr als übertragen. Ausgaben in diesen drei Monaten verbrauchen ihn zuerst, weil sie mit dem ältesten Guthaben verrechnet werden.` },
+      { q: 'Welche Ausgabe zehrt auf dem P-Konto zuerst den Übertrag auf?', a: 'Die Reihenfolge legt § 899 Abs. 2 Satz 2 ZPO fest: Verfügungen werden jeweils mit dem Guthaben verrechnet, das zuerst gutgeschrieben wurde. Jede Abbuchung verbraucht also zuerst den ältesten geschützten Rest, danach den Freibetrag des laufenden Monats. Das schützt Sie davor, dass ein alter Übertrag am Ende der Dreimonatsfrist ungenutzt verfällt, während Sie das frische Geld ausgeben.' },
+      { q: 'Bis wann kann ich der Bank sagen, dass sie meinen Freibetrag falsch berechnet hat?', a: `Bis zum Ende des sechsten Kalendermonats nach der Berechnung (§ 899 Abs. 3 ZPO). Betrifft der Fehler den Freibetrag, den die Bank am ${d(BERECHNUNG, 'de')} berechnet hat, reicht die Frist bis zum ${d(EINW, 'de')}. Danach zählen nur noch Einwände, deren Verspätung Sie nicht zu vertreten haben. Die Frist läuft für jeden monatlich berechneten Betrag gesondert.` },
+      { q: 'Wird Geld, das Ende des Monats für den Folgemonat eingeht, auf dem P-Konto doppelt gezählt?', a: 'Nein. Ist künftiges Guthaben gepfändet und überwiesen, darf die Bank eine Gutschrift erst nach Ablauf des Folgemonats an den Gläubiger auszahlen (§ 900 Abs. 1 ZPO). In diesem Folgemonat gilt das Geld als Guthaben dieses Monats und fällt unter dessen Freibetrag (§ 900 Abs. 2 ZPO). Die Dreimonatsfrist des Übertrags verlängert sich dadurch nicht.' },
+    ],
+    body: (h) => `
+<h2>So funktioniert der Übertrag</h2>
+<p>Der Freibetrag auf dem P-Konto gilt jeweils bis zum Ende des Kalendermonats. Wer ihn nicht ausschöpft, verliert den Rest nicht sofort: ${h.src('zpo899', '§ 899 Abs. 2 ZPO')} schützt das nicht verbrauchte Guthaben in den drei folgenden Monaten zusätzlich zum neuen Freibetrag. Ausgaben werden dabei mit dem Guthaben verrechnet, das zuerst eingegangen ist. Das ist eine einfache Warteschlange: Der älteste Rest wird zuerst ausgegeben, der jüngste bleibt am längsten.</p>
+<p>Die Tabelle zeigt das mit dem Rechenmodell dieser Seite. Jeden Monat gehen ${h.eur(S)} ein, genau der Sockel, und die Ausgaben schwanken. Im vierten Monat fällt eine größere Ausgabe an, die nur möglich ist, weil in den Vormonaten etwas übrig blieb.</p>
+${h.table(['Monat', 'Guthaben', 'Ausgegeben', 'Übertrag', 'Pfändbar'], A.map((m) => [String(m.monat), h.eur(m.guthaben), h.eur(m.verfuegt), h.eur(m.uebertrag), h.eur(m.pfaendbar)]), 'Beispiel: Gutschrift in Höhe des Sockels, schwankende Ausgaben', ['l', 'r', 'r', 'r', 'r'])}
+<p>Anders sieht es aus, wenn regelmäßig mehr eingeht als geschützt ist. Bei ${h.eur(1800)} im Monat und ${h.eur(1000)} Ausgaben bleibt zwar jeden Monat ein wachsender Übertrag, aber der Teil über dem Freibetrag, hier ${h.eur(B[0].pfaendbar)}, ist in jedem Monat pfändbar. Der Übertrag hilft also bei schwankenden Ausgaben, nicht bei dauerhaft höheren Einnahmen. Für Letzteres ist die Frage, ob Ihnen ein höherer Freibetrag zusteht; das prüft ${h.a('p-konto-freibetrag', 'P-Konto-Freibetrag 2026')}.</p>
+<p>Der Übertrag gilt nicht nur für den Sockel. ${h.src('zpo902', '§ 902 Satz 2 ZPO')} erklärt die Regel auch für die Erhöhungsbeträge für anwendbar, etwa für Kindergeld oder Unterhaltspflichten. Wer mit Bescheinigung einen höheren Freibetrag hat, rechnet im Rechner einfach mit diesem Betrag statt mit dem Sockel.</p>
+${h.mini('pkonto', { p: ['personen', 'kinder'], d: { personen: 1 }, c: 'Eigenen Freibetrag für die Rechnung ermitteln' })}
+<h2>Die Wartefrist bei künftigem Guthaben</h2>
+<p>Bei einer Kontopfändung wird meist nicht nur das heutige Guthaben gepfändet, sondern auch das künftige. Für diesen Fall bestimmt ${h.src('zpo900', '§ 900 Abs. 1 ZPO')}, dass die Bank aus einer Gutschrift erst nach Ablauf des Kalendermonats zahlen darf, der auf die Gutschrift folgt. Geht ein Betrag am Monatsende ein, der eigentlich den nächsten Monat finanzieren soll, wird er so nicht sofort abgeschöpft. Im Folgemonat zählt er als Guthaben dieses Monats und wird von dessen Freibetrag erfasst. Die Frist von drei Monaten aus § 899 Abs. 2 verlängert sich dadurch nicht. Auf Antrag des Gläubigers kann das Gericht abweichend entscheiden, wenn ihn die Wartefrist sonst unzumutbar hart träfe.</p>
+<p>Das Rechenmodell bildet diese Wartefrist nicht ab. Es nimmt an, dass jede Gutschrift im Monat ihres Eingangs zählt, und zeigt als „pfändbar“, was über dem Schutz liegt. In der Praxis kann die Bank diesen Teil also später auszahlen, als die Tabelle vermuten lässt. Die einmonatige Sperre nach Zustellung des Überweisungsbeschlusses aus ${h.src('zpo835', '§ 835 Abs. 3 ZPO')} kommt hinzu; dazu mehr unter ${h.a('kontopfaendung', 'Kontopfändung')}.</p>
+<h2>Fehler der Bank rechtzeitig rügen</h2>
+<p>Die Bank rechnet den Übertrag selbst. Stimmt die Höhe eines freien Betrags nicht, etwa weil eine Bescheinigung übersehen wurde, müssen Sie das der Bank mitteilen, und zwar bis zum Ablauf des sechsten Kalendermonats nach der jeweiligen Berechnung (§ 899 Abs. 3 ZPO). Für eine Berechnung im ${h.my('2026-11')} endet diese Frist mit dem ${h.day(h.monatsendeNach(BERECHNUNG, h.P.pkonto.einwendungMonate))}. Später lässt das Gesetz nur Einwände zu, deren Verspätung Sie nicht zu vertreten haben. Wer seine Kontoauszüge mit dem Rechner abgleicht, erkennt grobe Abweichungen früh. Besonderheiten bei verspätet gezahlten Leistungen erklärt ${h.a('nachzahlung', 'Nachzahlung auf dem P-Konto')}.</p>`,
+  },
+  en: {
+    slug: 'p-account-carry-over',
+    nav: 'P-account carry-over', card: 'Whatever is left of the allowance moves with you for three months',
+    title: 'P-Konto Übertrag 2026: carrying unused allowance forward',
+    description: 'P-account carry-over 2026 in Germany: unused allowance stays protected three months, spending comes off the oldest balance first. Model four months here.',
+    h1: 'P-account carry-over: what you take into next month',
+    intro: 'Enter your allowance, the monthly credit and your spending: the tool follows four months and shows how much stays protected, how much carries over and what a creditor would get.',
+    resume: `Whatever part of the protected amount on your German P-account you do not spend in one month stays protected on top for the next ${M} calendar months (section 899(2) ZPO, the Übertrag). Each payment out is set against the balance credited first, meaning the oldest leftover. An example with the ${e2(S, 'en')} base amount and a credit of the same size each month: spend ${e2(A[0].verfuegt, 'en')} in month one and ${e2(A[0].uebertrag, 'en')} moves into month two. After a frugal second month there is a cushion of ${e2(A[1].uebertrag, 'en')}, and in month four you can spend ${e2(A[3].verfuegt, 'en')} without the creditor getting anything. If instead more comes in every month than the allowance, say ${e2(1800, 'en')}, the excess of ${e2(B[0].pfaendbar, 'en')} is attachable each month. The rule also covers top-ups under section 902 ZPO. The calculator is a simplified model: it does not reproduce the waiting period in section 900 ZPO and does not replace your bank’s own statement.`,
+    faqs: [
+      { q: 'How long does unspent money stay protected on a P-account?', a: 'For three calendar months after the month in which it was protected (section 899(2) ZPO). A leftover from January is protected on top of the current allowance in February, March and April. If it is still there in May, it no longer counts as carried over. Spending in those three months uses it up first, because payments are set against the oldest balance.' },
+      { q: 'Which payment uses up the carried-over amount first?', a: 'Section 899(2) sentence 2 ZPO sets the order: each payment is set against the balance that was credited first. Every debit therefore consumes the oldest protected leftover before the current month’s allowance. That stops an old carry-over from expiring unused at the end of its three months while you spend fresh money.' },
+      { q: 'Until when can I tell the bank it calculated my allowance wrongly?', a: `Until the end of the sixth calendar month after the calculation (section 899(3) ZPO). For an amount the bank calculated on ${d(BERECHNUNG, 'en')}, that runs until ${d(EINW, 'en')}. After that, only objections whose lateness is not your fault are allowed. The period runs separately for each monthly amount.` },
+      { q: 'Is money credited at month end for the next month counted twice?', a: 'No. Where future balances are garnished and transferred, the bank may pay a credit to the creditor only after the following calendar month has ended (section 900(1) ZPO). In that following month the money counts as that month’s balance and falls under its allowance (section 900(2) ZPO). The three-month carry-over period is not extended by this.' },
+    ],
+    body: (h) => `
+<h2>How the carry-over works</h2>
+<p>The allowance on a P-account always runs to the end of the calendar month. If you do not use all of it, the rest does not vanish at once: ${h.src('zpo899', 'section 899(2) ZPO')} protects the unused balance in the three following months in addition to the new allowance. Spending is set against whatever came in first. Think of it as a simple queue: the oldest leftover is spent first, the newest stays longest.</p>
+<p>The table shows this with the model on this page. ${h.eur(S)} comes in every month, exactly the base amount, and spending varies. In month four a larger bill arrives, which can be paid only because something was left over in earlier months.</p>
+${h.table(['Month', 'Balance', 'Spent', 'Carried', 'Attachable'], A.map((m) => [String(m.monat), h.eur(m.guthaben), h.eur(m.verfuegt), h.eur(m.uebertrag), h.eur(m.pfaendbar)]), 'Example: credit equal to the base amount, varying spending', ['l', 'r', 'r', 'r', 'r'])}
+<p>Things look different when more comes in regularly than is protected. With ${h.eur(1800)} a month and ${h.eur(1000)} spent, a growing carry-over builds up, but the part above the allowance, here ${h.eur(B[0].pfaendbar)}, is attachable every month. The carry-over helps with uneven spending, not with permanently higher income. For the latter, the question is whether you are entitled to a higher allowance; ${h.a('p-konto-freibetrag', 'P-account allowance 2026')} checks that.</p>
+<p>The carry-over is not limited to the base amount. ${h.src('zpo902', 'Section 902 sentence 2 ZPO')} applies the rule to the top-ups as well, such as child benefit or dependants. If a certificate gives you a higher allowance, simply use that figure in the calculator instead of the base amount.</p>
+${h.mini('pkonto', { p: ['personen', 'kinder'], d: { personen: 1 }, c: 'Find your own allowance for the calculation' })}
+<h2>The waiting period for future balances</h2>
+<p>An account garnishment usually covers not only today’s balance but future ones too. For that case ${h.src('zpo900', 'section 900(1) ZPO')} says the bank may pay out of a credit only after the calendar month following the credit has ended. Money that arrives at the end of a month to fund the next one is therefore not skimmed off straight away. In the following month it counts as that month’s balance and is covered by that month’s allowance. The three-month period from section 899(2) is not extended. On the creditor’s application the court may decide otherwise if the wait would cause the creditor unreasonable hardship.</p>
+<p>The model does not reproduce this waiting period. It assumes every credit counts in the month it arrives and shows as “attachable” whatever exceeds the protection. In practice the bank may therefore pay that part out later than the table suggests. The one-month freeze after the transfer order is served, under ${h.src('zpo835', 'section 835(3) ZPO')}, comes on top; more on ${h.a('kontopfaendung', 'account garnishment')}.</p>
+<h2>Challenge bank errors in time</h2>
+<p>The bank works out the carry-over itself. If the amount of a protected sum is wrong, for example because a certificate was overlooked, you must tell the bank by the end of the sixth calendar month after the calculation concerned (section 899(3) ZPO). For a calculation in ${h.my('2026-11')} the deadline ends on ${h.day(h.monatsendeNach(BERECHNUNG, h.P.pkonto.einwendungMonate))}. After that the law only allows objections whose lateness is not your fault. Checking your statements against the calculator lets you spot large gaps early. Benefits paid late follow special rules, explained under ${h.a('nachzahlung', 'back-payments on a P-account')}.</p>`,
+  },
+});

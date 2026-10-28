@@ -1,0 +1,64 @@
+---
+/**
+ * Accueil : le Pfändungsrechner en tête, les repères 2026, la réponse repliée, la section « pourquoi », les
+ * familles de pages, les textes longs en accordéons, la FAQ.
+ * Texte : src/content/home.ts ; chiffres : params-2026.json.
+ */
+import PageLayout from '../layouts/PageLayout.astro';
+import Clamp from './Clamp.astro';
+import Tool from './Tool.astro';
+import Body from './Body.astro';
+import { HOME } from '../content/home';
+import { route, hasRoute, type Locale } from '../i18n/routes';
+import { GROUPS } from '../i18n/nav';
+import { helpers, sourceList } from '../lib/helpers';
+import { GUIDES } from '../lib/pages';
+import { faqSchema, organizationSchema, websiteSchema, webPageSchema, webApplicationSchema } from '../lib/seo';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const x = HOME[lang];
+const path = route('home', lang);
+const h = helpers(lang);
+const sources = sourceList(HOME.sources, lang);
+const jsonLd = [websiteSchema(lang), organizationSchema(lang), webPageSchema({ name: x.h1, description: x.description, path, lang }), webApplicationSchema({ name: x.h1, description: x.description, path, lang }), faqSchema(x.faqs, lang)];
+const tools = GUIDES.filter((p) => p.group === 'tabelle' && hasRoute(p.id, lang));
+const more = { de: 'Wie der Rechner rechnet und was wir geprüft haben', en: 'How the calculator works and what we checked' }[lang];
+const who = { de: 'Wer hinter der Seite steht', en: 'Who runs this site' }[lang];
+---
+<PageLayout title={x.title} description={x.description} lang={lang} jsonLd={jsonLd} faqs={x.faqs} sources={sources}>
+  <header class="mb-4">
+    <h1 class="text-[1.7rem] font-bold text-navy-900 max-sm:leading-tight sm:text-3xl md:text-4xl">{x.h1}</h1>
+    <p class="mt-2 text-base text-navy-700 sm:text-lg">{x.intro}</p>
+  </header>
+  <div data-outil data-chrome><Tool kind="rechner" lang={lang} idPrefix="home" /></div>
+  <dl data-chrome class="limits my-6 text-sm">
+    {x.facts.map((f) => <div><dt>{f.k}</dt><dd>{f.v}</dd></div>)}
+  </dl>
+  <Clamp text={x.resume} lang={lang} id="clamp-home" class="my-8" />
+  <section class="mt-10" data-chrome>
+    <h2 class="text-2xl font-bold text-navy-900">{x.toolsTitle}</h2>
+    <ol class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {tools.map((p) => <li class="rounded-lg border border-navy-200 bg-white p-4"><a href={route(p.id, lang)} class="font-semibold text-accent-700 underline-offset-2 hover:underline">{p[lang].nav}</a><span class="mt-1 block text-sm text-navy-600">{p[lang].card}</span></li>)}
+    </ol>
+    <p class="mt-4 text-sm text-navy-700"><a href={route('method', lang)} class="font-medium text-accent-700 underline">{more}</a> · <a href={route('about', lang)} class="font-medium text-accent-700 underline">{who}</a></p>
+  </section>
+  <section class="mt-10"><Body html={x.why(h)} path={path} lang={lang} /></section>
+  <section class="mt-10">
+    <h2 class="text-2xl font-bold text-navy-900">{x.foldTitle}</h2>
+    {x.sections(h).map((s) => <details class="fold"><summary><h3 class="fold-h">{s.title}</h3></summary><div class="pb-4"><Body html={s.html} path={path} lang={lang} /></div></details>)}
+  </section>
+  <section class="mt-10" data-chrome>
+    <h2 class="text-2xl font-bold text-navy-900">{lang === 'de' ? 'Alle Rechner nach Thema' : 'All calculators by topic'}</h2>
+    {GROUPS.filter((g) => g.id !== 'tabelle').map((g) => {
+      const list = GUIDES.filter((p) => p.group === g.id && hasRoute(p.id, lang));
+      return list.length > 0 && (
+        <div class="mb-6">
+          <h3 class="mt-6 text-xl font-bold text-navy-900">{g.label[lang]}</h3>
+          <ol class="mt-3 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
+            {list.map((p) => <li><a href={route(p.id, lang)} class="font-medium text-accent-700 underline-offset-2 hover:underline">{p[lang].nav}</a><span class="block text-navy-600">{p[lang].card}</span></li>)}
+          </ol>
+        </div>
+      );
+    })}
+  </section>
+</PageLayout>

@@ -1,0 +1,42 @@
+---
+/** Method: section 850c calculation, check against the official tables, P-account, deadlines, limits. Every figure from params-2026.json. */
+import PageLayout from '../../layouts/PageLayout.astro';
+import { route } from '../../i18n/routes';
+import { KIT as K } from '../../lib/kit';
+import { srcLink } from '../../lib/helpers';
+import { breadcrumbSchema, webPageSchema } from '../../lib/seo';
+import { displayDate, formatMoney, formatNumber } from '../../lib/format';
+const lang = 'en';
+const path = route('method', lang);
+const P = K.P, T = P.tabellen['2026'], T5 = P.tabellen['2025'], M = T.monat;
+const ZEILEN = Object.values(P.zeilen).reduce((a, z) => a + z.monat + z.woche + z.tag, 0);
+const title = 'Garnishment calculator 2026: method under section 850c ZPO';
+const description = 'How the 2026 German wage garnishment calculator works: exempt amount, steps and shares under section 850c ZPO, checked against every row of the official tables.';
+const s = (k: string, t: string) => srcLink(k, lang, t);
+const d = (x: string) => displayDate(x, 'en-GB');
+const e = (x: number, n = 2) => formatMoney(x, n, lang);
+const q = P.quoten.map((x: number) => `${formatNumber(x * 100, 0, lang)}%`).join(', ');
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[webPageSchema({ name: 'Method', description, path, lang }), breadcrumbSchema([{ name: 'Home', path: route('home', lang) }, { name: 'Method', path }])]} breadcrumbs={[{ label: 'Method' }]}>
+  <article class="prose prose-slate max-w-none">
+    <h1>How the garnishment calculator works</h1>
+    <p>Every calculator on this site runs in your browser. The amounts, number of dependants and dates you enter are not sent to any server and are not stored anywhere. The basis is the German Code of Civil Procedure (Zivilprozessordnung, ZPO), the official notices in the Federal Law Gazette and the other statutes linked on each page. Last read: {d(P.retrieved_at)}.</p>
+
+    <h2>The formula in section 850c ZPO</h2>
+    <p>The protected amount is made of a basic sum, a supplement for the first person you support and a smaller supplement for the second to fifth person. For pay periods from {d(T.gilt_ab)} the monthly figures are {e(M.grund)}, {e(M.erste)} and {e(M.weitere)} (<Fragment set:html={s('bek2026', T.fundstelle)} />). Of the net pay above that amount, <Fragment set:html={s('zpo850c', 'section 850c(3) ZPO')} /> keeps {q} protected depending on the number of dependants. Net pay is first rounded down to the table step: {e(M.stufe, 0)} a month, {e(T.woche.stufe)} a week, {e(T.tag.stufe)} a day. Anything above {e(M.hoechst)} can be taken in full. More than five dependants do not count.</p>
+    <p>The calculator works in cents rather than floating-point numbers and rounds to the nearest cent at the end, as the table does.</p>
+
+    <h2>Proof: every row of the official tables</h2>
+    <p>We read the six tables of the 2026 and 2025 notices (monthly, weekly, daily) from the official text and stored them as test data. An automated test compares all {formatNumber(ZEILEN, 0, lang)} rows, in all six columns (no dependants up to five), with the calculator's output on every code change. Differences found: none. The same tests cover the P-account base amount ({e(K.sockel('2026'), 0)} from {d(T.gilt_ab)}, {e(K.sockel('2025'), 0)} before), the Christmas bonus allowance, Easter dates for the coming years and the deadlines.</p>
+
+    <h2>P-account and deadlines</h2>
+    <p>The P-account base amount is the monthly basic sum rounded up to the next 10 euros (<Fragment set:html={s('zpo899', 'section 899 ZPO')} />). Increases follow <Fragment set:html={s('zpo902', 'section 902 ZPO')} />: the section 850c(2) supplement per person, child benefit (Kindergeld) of {e(P.kindergeld, 0)} per child (<Fragment set:html={s('estg66', 'section 66 EStG')} />) and certain social benefits. Unused balance carries over for up to {P.pkonto.uebertragMonate} months under section 899(2); our carry-over tool shows this as a simplified model that always spends the oldest balance first.</p>
+    <p>Deadlines follow <Fragment set:html={s('bgb188', 'section 188 BGB')} /> and <Fragment set:html={s('zpo222', 'section 222(2) ZPO')} />: if the last day is a Saturday, Sunday or public holiday, the period ends on the next working day. Only nationwide holidays are included. State holidays such as Corpus Christi or Reformation Day are not, so in those states the end can fall one day later.</p>
+
+    <h2>Limits</h2>
+    <p>The calculators show the result under the statute and the table. They do not know your garnishment order (Pfändungs- und Überweisungsbeschluss). For maintenance debts (<Fragment set:html={s('zpo850d', 'section 850d ZPO')} />), for the self-employed (section 850i) and for a change under section 850f, the enforcement court sets the amount; there we calculate nothing and only show the statutory ceiling. The table for pay periods from {d(P.naechsteTabelle.gilt_ab)} has not been published yet; the forecast tool uses an assumption you enter yourself and never presents it as official. The previous table ({d(T5.gilt_ab)} to {d(T5.gilt_bis)}) is available for comparison.</p>
+
+    <h2>Updates</h2>
+    <p>Each spring a new exemption-limit notice (Pfändungsfreigrenzenbekanntmachung) is published. We read it in the Federal Law Gazette, enter the figures with their reference, reload the tables and only publish once every row matches again. Child benefit is checked at each turn of the year. Report mistakes through the <a href={route('contact', lang)}>contact page</a>; how we correct them is described in the <a href={route('editorial', lang)}>editorial policy</a>.</p>
+  </article>
+</PageLayout>

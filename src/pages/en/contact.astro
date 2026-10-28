@@ -1,0 +1,20 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { CONTACT_EMAIL, SITE_NAMES } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+import { contactPageSchema } from '../../lib/seo';
+const lang = 'en';
+const description = 'Write to us if an amount, a table or a deadline looks wrong, or if you would like to embed the German garnishment calculator on your own website for readers.';
+---
+<PageLayout title={`Contact ${SITE_NAMES[lang]}: report an error, embed a calculator`} description={description} lang={lang} noindex={true} jsonLd={[contactPageSchema({ name: 'Contact', description, path: route('contact', lang), lang })]} breadcrumbs={[{ label: 'Contact' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Contact</h1>
+    <p>Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. We usually reply within a week.</p>
+    <h2>An amount or deadline looks wrong</h2>
+    <p>Tell us the page, what you entered and, if you can, the row of the official table or the section of the law. We check the source and correct within a few days. Please do not send us a garnishment order, bank statements or names: the figures are enough.</p>
+    <h2>Embed a calculator</h2>
+    <p>Charities, social services and advice sites can embed the garnishment calculator and the P-account calculator for free: <a href={route('widget', lang)}>embed the calculator</a>.</p>
+    <h2>What we do not do</h2>
+    <p>No legal advice on individual cases, no review of your order, no negotiation with creditors and no referral to third parties. This site calculates under the statute and the table, nothing more.</p>
+  </div>
+</PageLayout>

@@ -1,0 +1,37 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { AUTHOR_NAME, CLARITY_ID, CONTACT_EMAIL, GA4_ID, LAST_UPDATED, LEGAL, SITE_NAMES, SITE_URL } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+const lang = 'de';
+const title = `Impressum – ${SITE_NAMES[lang]}`;
+const description = 'Anbieter, inhaltlich Verantwortlicher, Hoster, keine Beratung, Urheberrecht, Datenschutz und anwendbares Recht dieser Seite.';
+---
+{/* Page générée par scripts/gen-legal-pages.py (trame, décision GA4 du 2026-10-17). Ne pas
+     retoucher à la main : relancer le script. Un passage propre au site se garde entre
+     les marqueurs site:debut et site:fin. */}
+<PageLayout title={title} description={description} lang={lang} noindex={true} breadcrumbs={[{ label: 'Impressum' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Impressum</h1>
+    <p>Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG) und § 18 Abs. 2 Medienstaatsvertrag (MStV) für {SITE_URL}.</p>
+    <h2>Anbieter</h2>
+    <LegalIdentity lang={lang} />
+    <p>Inhaltlich verantwortlich nach § 18 Abs. 2 MStV: {AUTHOR_NAME}, Anschrift wie oben.</p>
+    <h2>Hosting</h2>
+    <LegalIdentity mode="hosting" lang={lang} />
+    <h2>Zweck des Angebots und keine Beratung</h2>
+    <p>Die Seite stellt kostenlose Rechner und Ratgeber zur Information bereit. Die Ergebnisse sind unverbindliche Schätzungen auf Grundlage der auf jeder Seite genannten amtlichen Regeln und Werte; sie ersetzen weder eine Beratung noch einen Bescheid. Methode und Grenzen: <a href={route('method', lang)}>Methodik</a>.</p>
+    <h2>Haftung</h2>
+    <p>Die Parameter werden aktualisiert und die Rechnungen an Referenzfällen geprüft; eine Gewähr für Fehlerfreiheit besteht nicht. Für Entscheidungen, die allein auf einer Schätzung beruhen, haftet der Anbieter nicht. Fehler melden Sie über die <a href={route('contact', lang)}>Kontaktseite</a>.</p>
+    <h2>Urheberrecht</h2>
+    <p>Texte, Gestaltung und Code gehören dem Anbieter; kurze Zitate mit Link auf die Ursprungsseite sind erlaubt.</p>
+    {/* gen-legal-pages:terms */}
+    <h2>Datenschutz und Cookies</h2>
+    {GA4_ID ? (<p>Ihre Eingaben in den Rechnern verlassen Ihren Browser nicht. Die Seite setzt Cookies der Reichweitenmessung von Google Analytics (<code>_ga</code>, <code>_ga_{GA4_ID.replace('G-', '')}</code>, höchstens 13 Monate), ohne Werbung{CLARITY_ID && '; die Stabilität der Seiten wird mit Microsoft Clarity ohne Cookies gemessen'}. Einzelheiten, Rechtsgrundlage und Widerspruch: <a href={route('privacy', lang)}>Datenschutzerklärung</a> und Seite <a href={route('cookies', lang)}>Cookies</a>.</p>) : (<p>Ihre Eingaben in den Rechnern verlassen Ihren Browser nicht, und die Seite setzt keine Cookies{CLARITY_ID && '; die Stabilität der Seiten wird anonym mit Microsoft Clarity ohne Cookies gemessen'}. Siehe <a href={route('privacy', lang)}>Datenschutzerklärung</a> und Seite <a href={route('cookies', lang)}>Cookies</a>.</p>)}
+    {/* /gen-legal-pages:terms */}
+    <h2>Meldung rechtswidriger Inhalte</h2>
+    <p>Rechtswidrige Inhalte melden Sie an <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, mit Adresse der Seite und Grund.</p>
+    <h2>Anwendbares Recht</h2>
+    <p>Es gilt französisches Recht. Ohne gütliche Einigung sind die Gerichte von {LEGAL.jurisdiction} zuständig. Stand: {LAST_UPDATED}.</p>
+  </div>
+</PageLayout>

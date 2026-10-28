@@ -1,0 +1,35 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import LegalIdentity from '../../components/LegalIdentity.astro';
+import { route } from '../../i18n/routes';
+import { AUTHOR_NAME, AUTHOR_DESC, CONTACT_EMAIL, SITE_NAMES } from '../../data/site-config';
+import { srcLink } from '../../lib/helpers';
+import { KIT as K } from '../../lib/kit';
+import { profilePageSchema, breadcrumbSchema } from '../../lib/seo';
+import { formatNumber } from '../../lib/format';
+const lang = 'en';
+const path = route('about', lang);
+const title = 'Wage garnishment calculator 2026: publisher and sources';
+const description = 'The 2026 German garnishment calculator is published by Radif Partners: free, independent tools for wage and P-account protection, in your browser, no account.';
+const s = (k: string, t: string) => srcLink(k, lang, t);
+const ZEILEN = Object.values(K.P.zeilen).reduce((a, z) => a + z.monat + z.woche + z.tag, 0);
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[profilePageSchema({ path, lang }), breadcrumbSchema([{ name: 'Home', path: route('home', lang) }, { name: 'About', path }])]} breadcrumbs={[{ label: 'About' }]}>
+  <article class="prose prose-slate max-w-none">
+    <h1>About {SITE_NAMES[lang]}</h1>
+    <p>{AUTHOR_DESC.en}</p>
+    <h2>Why this site exists</h2>
+    <p>If your wages or bank account are garnished in Germany, you need one number fast: how much do I keep? The official table answers that, but it is a long PDF with hundreds of rows in German, and many offers on the subject end in a contact form. This site does the opposite: the same table as a calculator for monthly, weekly and daily pay, plus the protected account (P-Konto), the deadlines and the income that cannot be taken at all. What we add: the arithmetic is checked against all {formatNumber(ZEILEN, 0, lang)} rows of the 2025 and 2026 tables, and every answer names the section it comes from.</p>
+    <h2>Who publishes it</h2>
+    <p>The publisher is {AUTHOR_NAME}, a company that builds calculators from public rules and data. {AUTHOR_NAME} is not an authority, a court, a debt advice service or a law firm. The site is not affiliated with any ministry, creditor, collection agency or bank and uses none of their logos. It sells nothing, refers you to no adviser and contains no affiliate links.</p>
+    <LegalIdentity lang={lang} />
+    <h2>Where the figures come from</h2>
+    <p>The protected amounts come from the <Fragment set:html={s('bek2026', '2026 exemption-limit notice')} /> and the <Fragment set:html={s('bek2025', '2025 notice')} />; the rules from the Code of Civil Procedure, in particular <Fragment set:html={s('zpo850c', 'section 850c')} />, <Fragment set:html={s('zpo850k', 'section 850k')} /> and <Fragment set:html={s('zpo899', 'section 899 ZPO')} />, and from <Fragment set:html={s('sgb1-54', 'section 54 SGB I')} /> and <Fragment set:html={s('estg76', 'section 76 EStG')} />. How we calculate and check is on the <a href={route('method', lang)}>method</a> page; how we correct, in the <a href={route('editorial', lang)}>editorial policy</a>.</p>
+    <h2>Your data</h2>
+    <p>The calculators run only in your browser. There is no account and no form that sends what you enter to us. Details on audience measurement are in the <a href={route('privacy', lang)}>privacy policy</a>.</p>
+    <h2>What the site does not do</h2>
+    <p>It does not replace the garnishment order or a decision of the enforcement court and gives no legal advice. What counts is what the court, your employer and your bank set in your case.</p>
+    <h2>Write to us</h2>
+    <p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, if you notice a wrong amount, an outdated table or a deadline calculated incorrectly.</p>
+  </article>
+</PageLayout>

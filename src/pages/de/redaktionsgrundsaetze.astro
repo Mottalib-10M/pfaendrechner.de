@@ -1,0 +1,27 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { AUTHOR_NAME, CONTACT_EMAIL, LAST_UPDATED, REVIEW_CYCLE_MONTHS, SITE_NAMES } from '../../data/site-config';
+import { route } from '../../i18n/routes';
+const lang = 'de';
+---
+<PageLayout title={`Redaktionsgrundsätze von ${SITE_NAMES[lang]}: Quellen und Prüfung`} description="Woher Freibeträge, Tabellen und Fristen kommen, in welcher Rangfolge wir Quellen lesen, wie wir die Rechner prüfen, wann wir aktualisieren und wie wir Fehler beheben." lang={lang} noindex={true} breadcrumbs={[{ label: 'Redaktionsgrundsätze' }]} showAuthor={false}>
+  <div class="prose prose-slate max-w-none">
+    <h1>Redaktionsgrundsätze und Korrekturen</h1>
+    <p>Wer mit einem falschen Freibetrag plant, zahlt zu viel an den Gläubiger oder hat am Monatsende zu wenig zum Leben. Deshalb steht hier, woher alles kommt und was passiert, wenn etwas nicht stimmt.</p>
+    <h2>Verantwortung</h2><p>Inhalte und Rechner verantwortet {AUTHOR_NAME}. Kontakt: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+    <h2>Rangfolge der Quellen</h2>
+    <ol>
+      <li><strong>Gesetze</strong> in der geltenden Fassung auf gesetze-im-internet.de: Zivilprozessordnung (§§ 829 bis 907), Sozialgesetzbuch I und II, Einkommensteuergesetz, Bundeselterngeld- und Elternzeitgesetz, BGB;</li>
+      <li><strong>Amtliche Bekanntmachungen</strong> im Bundesgesetzblatt, vor allem die jährliche Pfändungsfreigrenzenbekanntmachung mit ihren Tabellen;</li>
+      <li><strong>Begründungen und Veröffentlichungen</strong> der Bundesministerien, nur zur Auslegung und mit Nennung.</li>
+    </ol>
+    <p>Foren, Ratgeberartikel und Angebote von Dienstleistern sind keine Quelle für einen Betrag oder eine Frist. Widersprechen sich zwei Quellen, gilt die höhere, und wir sagen es.</p>
+    <h2>Jede Zahl mit Datum</h2><p>Jeder Freibetrag, jede Stufe und jede Frist steht mit Fundstelle und Lesedatum in einer Parameterdatei. Die Seiten lesen ihre Zahlen aus dieser Datei, nie aus dem Text. Was noch nicht im Bundesgesetzblatt steht, etwa die Tabelle ab dem 1. Juli 2027, heißt hier „noch nicht bekannt gemacht“ und fließt nicht in die Rechner ein.</p>
+    <h2>Prüfung der Rechner</h2><p>Die amtlichen Tabellen sind als Prüfdaten abgelegt. Automatische Tests vergleichen jede Zeile mit dem Ergebnis des Rechners, dazu Sockelbetrag, Fristen und Feiertage, bei jeder Änderung des Codes.</p>
+    <h2>Rhythmus</h2><p>Die Quellen werden regelmäßig neu gelesen. Vollständige Durchsicht mindestens alle {REVIEW_CYCLE_MONTHS} Monate, außerdem nach jeder neuen Bekanntmachung, jeder Änderung des Kindergelds und jeder Änderung der §§ 850 bis 907 ZPO.</p>
+    <h2>Umgang mit Fehlern</h2>
+    <ol><li>Prüfung an der Quelle.</li><li>Korrektur in der Parameterdatei oder im Rechenweg und ein neuer Test.</li><li>Neues Datum auf allen Seiten.</li></ol>
+    <h2>Unabhängigkeit</h2><p>Kein Geld von Gläubigern, Inkassounternehmen, Banken, Kanzleien oder Beratungsstellen. Keine Affiliate-Links, keine bezahlten Beiträge, kein Formular zur Kundengewinnung, keine Weitervermittlung.</p>
+    <p>Siehe auch <a href={route('method', lang)}>Rechenweg</a>. Fassung: {LAST_UPDATED}.</p>
+  </div>
+</PageLayout>

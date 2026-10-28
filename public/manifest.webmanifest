@@ -1,0 +1,21 @@
+{
+ "name": "DE Pfändung",
+ "short_name": "DE Pfändung",
+ "description": "Pfändbaren Betrag nach der Pfändungstabelle 2026 berechnen, P-Konto-Freibetrag mit Erhöhungen prüfen und die amtliche Tabelle lesen: im Browser, ohne Anmeldung.",
+ "start_url": "/de/",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#1F5C4A",
+ "icons": [
+  {
+   "src": "/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
