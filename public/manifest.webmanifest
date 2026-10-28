@@ -1,6 +1,6 @@
 {
- "name": "DE Pfändung",
- "short_name": "DE Pfändung",
+ "name": "Pfändrechner",
+ "short_name": "Pfändrechner",
  "description": "Pfändbaren Betrag nach der Pfändungstabelle 2026 berechnen, P-Konto-Freibetrag mit Erhöhungen prüfen und die amtliche Tabelle lesen: im Browser, ohne Anmeldung.",
  "start_url": "/de/",
  "display": "standalone",

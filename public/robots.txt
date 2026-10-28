@@ -3,4 +3,4 @@ Allow: /
 
 Disallow: /*?*
 
-Sitemap: https://de-pfaendung.example/sitemap-index.xml
+Sitemap: https://pfaendrechner.de/sitemap-index.xml

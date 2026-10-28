@@ -1,8 +1,8 @@
 /** Configuration centrale du site (générée par new-site.py). */
-export const SITE_URL = "https://de-pfaendung.example";
-export const SITE_NAMES: Record<string, string> = {"de": "DE Pfändung", "en": "DE Pfändung"};
+export const SITE_URL = "https://pfaendrechner.de";
+export const SITE_NAMES: Record<string, string> = {"de": "Pfändrechner", "en": "Pfändrechner"};
 // Partie du nom affichée en couleur dans l'en-tête (RECETTE §10.3), « » pour aucune.
-export const BRAND_ACCENT = "";
+export const BRAND_ACCENT = "rechner";
 export const LANG_TAGS: Record<string, string> = {"de": "de-DE", "en": "en-DE"};
 /** Locale des nombres et des dates : anglais britannique pour la version anglaise. */
 export const NUM_TAGS: Record<string, string> = {"de": "de-DE", "en": "en-GB"};
@@ -20,7 +20,7 @@ export const AUTHOR_DESC: Record<string, string> = {"de": "Radif Partners ist ei
  *  themes reellement traites par le site, pas une liste de mots-cles : un sujet
  *  declare ici sans page qui le couvre est une declaration fausse. */
 export const KNOWS_ABOUT: Record<string, string[]> = {"de": ["Pfändungstabelle nach § 850c ZPO", "Pfändungsschutzkonto (P-Konto)", "Lohnpfändung", "Kontopfändung", "Unterhaltspfändung nach § 850d ZPO", "Pfändungsschutz für Kindergeld und Sozialleistungen"], "en": ["German wage garnishment table", "Pfändungsschutzkonto (P-account)", "Wage garnishment in Germany", "Bank account garnishment in Germany", "Maintenance garnishment"]};
-export const CONTACT_EMAIL = "kontakt@de-pfaendung.example";
+export const CONTACT_EMAIL = "contact@pfaendrechner.de";
 export const THEME_COLOR = '#1F5C4A';
 export const LOGO_SYMBOL = 'Pf';
 export const BING_VERIFY_CODE = '';
